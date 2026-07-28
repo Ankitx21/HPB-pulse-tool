@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Building Health Tool</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+  <div class="app-container form-only-page">
+    <main class="tool-section">
+      <div class="main-grid" id="mainGrid">
+        <section class="card input-card" id="inputCard">
+          <div class="input-section">
+            <div class="input-section-title">
+              <span class="section-number">1</span>
+              <span>Building location</span>
+            </div>
+
+            <div class="field-grid two-fields">
+              <div class="form-group">
+                <label for="state" class="field-label">State</label>
+                <select id="state">
+                  <option value="">Select State</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="city" class="field-label">City</label>
+                <select id="city" disabled>
+                  <option value="">Select City</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="input-divider"></div>
+
+          <div class="input-section">
+            <div class="input-section-title">
+              <span class="section-number">2</span>
+              <span>Building details</span>
+            </div>
+
+            <div class="field-grid two-fields">
+              <div class="form-group">
+                <label for="buildingType" class="field-label">Building type
+                  <span class="input-help">
+                    <img class="input-help-icon" src="buildinge_health_tool_asset/info.png" alt="More info">
+                    <span class="input-help-tooltip">At present, this tool is available only for offices.</span>
+                  </span>
+                </label>
+                <select id="buildingType">
+                  <option>Office</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="area" class="field-label">Built-up area
+                  <span class="input-help">
+                    <img class="input-help-icon" src="buildinge_health_tool_asset/info.png" alt="More info">
+                    <span class="input-help-tooltip">Total area of the building, excluding covered parking.</span>
+                  </span>
+                </label>
+                <div class="field-with-unit">
+                  <input type="number" id="area" placeholder="">
+                  <span>m&sup2;</span>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="acArea" class="field-label">Air-conditioned area
+                  <span class="input-help">
+                    <img class="input-help-icon" src="buildinge_health_tool_asset/info.png" alt="More info">
+                    <span class="input-help-tooltip">Percentage of the built-up area that is air-conditioned.</span>
+                  </span>
+                </label>
+                <div class="field-with-unit">
+                  <input type="number" id="acArea" placeholder="">
+                  <span>%</span>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="occupants" class="field-label">Total number of occupants
+                  <span class="input-help">
+                    <img class="input-help-icon" src="buildinge_health_tool_asset/info.png" alt="More info">
+                    <span class="input-help-tooltip">Total number of people occupying the building on a typical
+                      day.</span>
+                  </span>
+                </label>
+                <div class="field-with-unit">
+                  <input type="number" id="occupants" placeholder="">
+                  <span>people</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="input-divider"></div>
+
+          <div class="input-section">
+            <div class="input-section-title">
+              <span class="section-number">3</span>
+              <span>Energy</span>
+            </div>
+
+            <div class="field-grid two-fields">
+              <div class="form-group">
+                <label for="energyPeriod" class="field-label">Electricity Consumption
+                  <span class="input-help">
+                    <img class="input-help-icon" src="buildinge_health_tool_asset/info.png" alt="More info">
+                    <span class="input-help-tooltip">Total electricity used by the building.</span>
+                  </span>
+                </label>
+                <select id="energyPeriod">
+                  <option value="annual" selected>Annual</option>
+                  <option value="monthly">Monthly average</option>
+                </select>
+              </div>
+
+              <div class="form-group value-group">
+                <label for="energy" class="field-label">Electricity value</label>
+                <div class="field-with-unit">
+                  <input type="number" id="energy" placeholder="">
+                  <span>kWh</span>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="acCapacity" class="field-label">Installed AC Capacity
+                  <span class="input-help">
+                    <img class="input-help-icon" src="buildinge_health_tool_asset/info.png" alt="More info">
+                    <span class="input-help-tooltip">Total installed cooling capacity of all air-conditioning
+                      systems.</span>
+                  </span>
+                </label>
+                <div class="field-with-unit">
+                  <input type="number" id="acCapacity" placeholder="">
+                  <span>TR</span>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="contractDemand" class="field-label">Contract Demand
+                  <span class="input-help">
+                    <img class="input-help-icon" src="buildinge_health_tool_asset/info.png" alt="More info">
+                    <span class="input-help-tooltip">Maximum electrical load agreed with your electricity
+                      utility.</span>
+                  </span>
+                </label>
+                <div class="field-with-unit">
+                  <input type="number" id="contractDemand" placeholder="">
+                  <span>kVA</span>
+                </div>
+              </div>
+
+              <div class="form-group half-field">
+                <label for="dgSize" class="field-label">DG set size
+                  <span class="input-help">
+                    <img class="input-help-icon" src="buildinge_health_tool_asset/info.png" alt="More info">
+                    <span class="input-help-tooltip">Total backup generator capacity installed in the building.</span>
+                  </span>
+                </label>
+                <div class="field-with-unit">
+                  <input type="number" id="dgSize" placeholder="">
+                  <span>kVA</span>
+                </div>
+              </div>
+
+              <div class="form-group full-row renewable-row">
+                <label id="renewableLabel" for="renewablePeriod" class="field-label">Renewable Energy
+                  <span class="input-help">
+                    <img class="input-help-icon" src="buildinge_health_tool_asset/info.png" alt="More info">
+                    <span class="input-help-tooltip">Total energy generated from renewable sources such as solar
+                      panels.</span>
+                  </span>
+                </label>
+                <div class="split-field">
+                  <select id="renewablePeriod">
+                    <option value="annual" selected>Annual</option>
+                    <option value="monthly">Monthly average</option>
+                  </select>
+                  <div class="field-with-unit">
+                    <input type="number" id="renewableValue" placeholder="" />
+                    <span>kWh</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="input-divider"></div>
+
+          <div class="input-section water-section">
+            <div class="input-section-title">
+              <span class="section-number">4</span>
+              <span>Water</span>
+            </div>
+
+            <div class="field-grid two-fields">
+              <div class="form-group">
+                <label for="waterPeriod" class="field-label">Water Consumption
+                  <span class="input-help">
+                    <img class="input-help-icon" src="buildinge_health_tool_asset/info.png" alt="More info">
+                    <span class="input-help-tooltip">Total water used by the building from all sources.</span>
+                  </span>
+                </label>
+                <select id="waterPeriod">
+                  <option value="annual" selected>Annual</option>
+                  <option value="monthly">Monthly average</option>
+                  <option value="daily">Daily</option>
+                </select>
+              </div>
+
+              <div class="form-group value-group">
+                <label for="water" class="field-label">Water value</label>
+                <div class="field-with-unit">
+                  <input type="number" id="water" placeholder="" />
+                  <span>kL</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="action-stack">
+            <button id="assessBtn">Run assessment </button>
+            <button id="resetBtn" type="button" class="button-secondary">Assess Another Project</button>
+          </div>
+        </section>
+
+        <!-- RIGHT : RESULTS -->
+        <section class="card results-panel hidden" id="results">
+          <div class="results-title">Results</div>
+          <div class="output-card-grid" id="outputCards"></div>
+          <div class="results-actions">
+            <button id="downloadReportBtn" type="button" class="button-secondary">Download report</button>
+          </div>
+        </section>
+
+
+
+
+      </div>
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+
+</html>
