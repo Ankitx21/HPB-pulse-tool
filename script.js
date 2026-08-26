@@ -732,7 +732,7 @@ function calculateBuildingPerformance(inputs) {
     if (sfPerTR >= 700 && sfPerTR <= 800) {
       hvacSizing = {
         value: `${sfPerTR.toFixed(0)} sqft/TR`,
-        status: "Efficient sizing",
+        status: "Right amount of cooling provided",
         note: "Within recommended range",
         class: "rating-excellent",
         sfPerTR
@@ -741,7 +741,7 @@ function calculateBuildingPerformance(inputs) {
     else if (sfPerTR < 700) {
       hvacSizing = {
         value: `${sfPerTR.toFixed(0)} sqft/TR`,
-        status: "Oversized",
+        status: "More cooling provided than needed",
         note: "Low sqft/TR",
         class: "rating-poor",
         sfPerTR
@@ -750,7 +750,7 @@ function calculateBuildingPerformance(inputs) {
     else {
       hvacSizing = {
         value: `${sfPerTR.toFixed(0)} sqft/TR`,
-        status: "Possibly undersized",
+        status: "Less cooling provided than needed",
         note: "High sqft/TR",
         class: "rating-fair",
         sfPerTR
@@ -1739,7 +1739,7 @@ function renderResults(r) {
       ? "Excellent! 5-Star energy performance."
       : starCount > 0
         ? `${starCount}-Star energy performance.`
-        : MISSING_RESULT_TEXT;
+        : "Zero star energy performance.";
 
   const epiTone = Number.isFinite(r.epi) && r.epi <= ASSURE_EPI_TARGET ? "tone-good" : "tone-warn";
   const epiAxis = Math.max(ASSURE_EPI_TARGET * 1.7, Number.isFinite(r.epi) ? r.epi * 1.25 : 0, 120);
@@ -1763,14 +1763,16 @@ function renderResults(r) {
   const hvacValue = r.hvacSizing?.sfPerTR;
   const hvacTone = !Number.isFinite(hvacValue)
     ? "tone-missing"
-    : hvacValue <= 800
+    : hvacValue >= 700 && hvacValue <= 800
       ? "tone-good"
-      : hvacValue <= 1000
-        ? "tone-warn"
-        : "tone-bad";
+      : "tone-bad";
   const hvacAxis = Math.max(1000, Number.isFinite(hvacValue) ? hvacValue * 1.25 : 0);
   const hvacMsg = Number.isFinite(hvacValue)
-    ? hvacValue <= 800 ? "Within HVAC capacity target" : hvacValue <= 1000 ? "Slightly above HVAC capacity target" : "Less cooling provided than needed"
+    ? hvacValue < 700
+      ? "More cooling provided than needed"
+      : hvacValue <= 800
+        ? "Right amount of cooling provided"
+        : "Less cooling provided than needed"
     : MISSING_RESULT_TEXT;
 
   const cdValue = r.demandSizing?.cdWsf;
@@ -1839,7 +1841,7 @@ function renderResults(r) {
     target: 800,
     axisMax: hvacAxis,
     unit: "sqft/TR",
-    targetLabel: "ASSURE KPI<br><b>&lt; 800 sqft/TR</b>",
+    targetLabel: "ASSURE KPI<br><b>700-800 sqft/TR</b>",
     buildingLabel: "YOUR BUILDING",
     fillClass: "hvac-gradient",
     toneClass: hvacTone
