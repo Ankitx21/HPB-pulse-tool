@@ -5,6 +5,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Building Health Tool</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 </head>
 
@@ -65,7 +68,7 @@
                   </span>
                 </label>
                 <div class="field-with-unit">
-                  <input type="number" id="area" placeholder="">
+                  <input type="number" id="area" placeholder="e.g. 10,000">
                   <span>m&sup2;</span>
                 </div>
               </div>
@@ -78,7 +81,7 @@
                   </span>
                 </label>
                 <div class="field-with-unit">
-                  <input type="number" id="acArea" placeholder="">
+                  <input type="number" id="acArea" placeholder="e.g. 80">
                   <span>%</span>
                 </div>
               </div>
@@ -92,7 +95,7 @@
                   </span>
                 </label>
                 <div class="field-with-unit">
-                  <input type="number" id="occupants" placeholder="">
+                  <input type="number" id="occupants" placeholder="e.g. 1000">
                   <span>people</span>
                 </div>
               </div>
@@ -109,14 +112,14 @@
 
             <div class="field-grid two-fields">
               <div class="form-group">
-                <label for="energyPeriod" class="field-label">Electricity Consumption
+                <label for="energyPeriod" class="field-label">Electricity consumption
                   <span class="input-help">
                     <img class="input-help-icon" src="buildinge_health_tool_asset/info.png" alt="More info">
                     <span class="input-help-tooltip">Total electricity used by the building.</span>
                   </span>
                 </label>
                 <select id="energyPeriod">
-                  <option value="annual" selected>Annual</option>
+                  <option value="annual" selected>Annual total</option>
                   <option value="monthly">Monthly average</option>
                 </select>
               </div>
@@ -130,7 +133,7 @@
               </div>
 
               <div class="form-group">
-                <label for="acCapacity" class="field-label">Installed AC Capacity
+                <label for="acCapacity" class="field-label">Installed AC capacity
                   <span class="input-help">
                     <img class="input-help-icon" src="buildinge_health_tool_asset/info.png" alt="More info">
                     <span class="input-help-tooltip">Total installed cooling capacity of all air-conditioning
@@ -138,13 +141,13 @@
                   </span>
                 </label>
                 <div class="field-with-unit">
-                  <input type="number" id="acCapacity" placeholder="">
+                  <input type="number" id="acCapacity" placeholder="e.g. 250">
                   <span>TR</span>
                 </div>
               </div>
 
               <div class="form-group">
-                <label for="contractDemand" class="field-label">Contract Demand
+                <label for="contractDemand" class="field-label">Contract demand
                   <span class="input-help">
                     <img class="input-help-icon" src="buildinge_health_tool_asset/info.png" alt="More info">
                     <span class="input-help-tooltip">Maximum electrical load agreed with your electricity
@@ -152,7 +155,7 @@
                   </span>
                 </label>
                 <div class="field-with-unit">
-                  <input type="number" id="contractDemand" placeholder="">
+                  <input type="number" id="contractDemand" placeholder="e.g. 115">
                   <span>kVA</span>
                 </div>
               </div>
@@ -165,13 +168,13 @@
                   </span>
                 </label>
                 <div class="field-with-unit">
-                  <input type="number" id="dgSize" placeholder="">
+                  <input type="number" id="dgSize" placeholder="e.g. 10">
                   <span>kVA</span>
                 </div>
               </div>
 
               <div class="form-group full-row renewable-row">
-                <label id="renewableLabel" for="renewablePeriod" class="field-label">Renewable Energy
+                <label id="renewableLabel" for="renewablePeriod" class="field-label">Renewable energy
                   <span class="input-help">
                     <img class="input-help-icon" src="buildinge_health_tool_asset/info.png" alt="More info">
                     <span class="input-help-tooltip">Total energy generated from renewable sources such as solar
@@ -180,7 +183,7 @@
                 </label>
                 <div class="split-field">
                   <select id="renewablePeriod">
-                    <option value="annual" selected>Annual</option>
+                    <option value="annual" selected>Annual total</option>
                     <option value="monthly">Monthly average</option>
                   </select>
                   <div class="field-with-unit">
@@ -202,14 +205,14 @@
 
             <div class="field-grid two-fields">
               <div class="form-group">
-                <label for="waterPeriod" class="field-label">Water Consumption
+                <label for="waterPeriod" class="field-label">Water consumption
                   <span class="input-help">
                     <img class="input-help-icon" src="buildinge_health_tool_asset/info.png" alt="More info">
                     <span class="input-help-tooltip">Total water used by the building from all sources.</span>
                   </span>
                 </label>
                 <select id="waterPeriod">
-                  <option value="annual" selected>Annual</option>
+                  <option value="annual" selected>Annual total</option>
                   <option value="monthly">Monthly average</option>
                   <option value="daily">Daily</option>
                 </select>
