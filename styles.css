@@ -4978,3 +4978,25 @@ body {
 .results-panel .building-tag {
   top: 82px !important;
 }
+
+/* Align result messages consistently across every output-card row. */
+.results-panel .metric-card {
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+.results-panel .metric-card .card-message {
+  margin-top: auto !important;
+}
+
+/* Keep the BEE climate label aligned with the five-star row. */
+.results-panel #outStarRating .climate-pill {
+  width: 190px !important;
+  max-width: 100% !important;
+  margin: 36px 0 0 !important;
+  align-self: flex-start !important;
+}
+
+.results-panel #outStarRating .card-message {
+  margin-top: 36px !important;
+}
