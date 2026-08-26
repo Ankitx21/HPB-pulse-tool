@@ -1819,7 +1819,7 @@ function renderResults(r) {
       <p class="card-message" id="epiMessage">${epiMessage}</p>
     </article>
 
-    <article class="metric-card ${netTone}">
+    <article class="metric-card net-energy-card-output ${netTone}">
       ${renderOutputHeader("buildinge_health_tool_asset/net_energy.png", "Net Energy Status", netTone, "Net Energy Status shows whether your building produces enough energy to meet its needs. A positive status means you produce more than you consume.")}
       <div class="net-card-body">
         <div class="donut" style="--pct:${donutPct};"></div>
