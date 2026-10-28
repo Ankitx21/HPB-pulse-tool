@@ -5,6 +5,7 @@ const resetBtn = document.getElementById("resetBtn");
 const downloadReportBtn = document.getElementById("downloadReportBtn");
 
 let latestResults = null;
+let latestAssessmentInputs = null;
 
 function collectInputs() {
   return {
@@ -187,79 +188,26 @@ function positionBubbleInFrame(bubble, frame, scale, pct, padding = 8) {
   };
 }
 
-function downloadReport() {
-  if (!latestResults) return;
-
-  const inputs = collectInputs();
-  const reportDate = new Date().toLocaleString("en-IN", {
-    dateStyle: "medium",
-    timeStyle: "short"
-  });
-  const citySlug = (inputs.city || "project")
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-|-$/g, "") || "project";
-
-  const reportHtml = `<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Building Health Report</title>
-  <style>
-    body { margin: 0; padding: 32px; background: #142347; color: #e8eefc; font-family: "Segoe UI", sans-serif; }
-    .report { max-width: 920px; margin: 0 auto; }
-    .hero, .panel { background: #223162; border: 1px solid rgba(232, 238, 252, 0.12); border-radius: 18px; padding: 24px; box-shadow: 0 18px 40px rgba(0, 0, 0, 0.18); }
-    .hero { margin-bottom: 18px; }
-    h1, h2 { margin: 0 0 12px; }
-    p { margin: 0; line-height: 1.6; color: #dbe4ff; }
-    .meta, .grid { display: grid; gap: 14px; }
-    .meta { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); margin-top: 18px; }
-    .grid { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
-    .item { background: #1b2850; border-radius: 14px; padding: 16px; }
-    .label { display: block; margin-bottom: 8px; font-size: 13px; letter-spacing: 0.04em; text-transform: uppercase; color: #9fb3ea; }
-    .value { font-size: 20px; font-weight: 700; color: #ffffff; }
-    .note { margin-top: 8px; font-size: 14px; color: #dbe4ff; }
-  </style>
-</head>
-<body>
-  <div class="report">
-    <div class="hero">
-      <h1>Building Health Report</h1>
-      <p>Generated on ${reportDate}</p>
-      <div class="meta">
-        <div class="item"><span class="label">Building Type</span><div class="value">${inputs.buildingType || "Office"}</div></div>
-        <div class="item"><span class="label">Location</span><div class="value">${inputs.city || "Not provided"}</div><div class="note">${inputs.state || ""}</div></div>
-        <div class="item"><span class="label">Climate Zone</span><div class="value">${latestResults.climateZone || "Unknown"}</div></div>
-      </div>
-    </div>
-    <div class="panel">
-      <h2>Assessment Summary</h2>
-      <div class="grid">
-        <div class="item"><span class="label">BEE Star Rating</span><div class="value">${getElementText("outStarRating") || MISSING_RESULT_TEXT}</div></div>
-        <div class="item"><span class="label">Energy Performance Index</span><div class="value">${formatMetricValue(latestResults.epi)} kWh/m²/yr</div><div class="note">${getElementText("epiMessage")}</div></div>
-        <div class="item"><span class="label">Net Energy Status</span><div class="value">${latestResults.netEnergy > 0 ? "Net Positive" : latestResults.netEnergy < 0 ? "Net Negative" : "Net Zero"}</div><div class="note">${getElementText("netEnergyMsg")}</div></div>
-        <div class="item"><span class="label">HVAC Capacity Factor</span><div class="value">${latestResults.hvacSizing.value || MISSING_RESULT_TEXT}</div><div class="note">${latestResults.hvacSizing.status || ""}</div></div>
-        <div class="item"><span class="label">Contract Demand Density</span><div class="value">${latestResults.demandSizing.contract || "Not provided"}</div><div class="note">${latestResults.demandSizing.contractStatus || ""}</div></div>
-        <div class="item"><span class="label">Backup Power Density</span><div class="value">${latestResults.demandSizing.dg || "Not provided"}</div><div class="note">${latestResults.demandSizing.dgStatus || ""}</div></div>
-        <div class="item"><span class="label">Water Efficiency</span><div class="value">${Number.isFinite(latestResults.lpcd) ? `${latestResults.lpcd.toFixed(1)} lpcd` : MISSING_RESULT_TEXT}</div><div class="note">${latestResults.waterStatus.text || ""}</div></div>
-      </div>
-    </div>
-  </div>
-</body>
-</html>`;
-
-  const blob = new Blob([reportHtml], { type: "text/html" });
-  const url = URL.createObjectURL(blob);
-  const link = document.createElement("a");
-
-  link.href = url;
-  link.download = `building-health-report-${citySlug}.html`;
-  document.body.appendChild(link);
-  link.click();
-  link.remove();
-
-  setTimeout(() => URL.revokeObjectURL(url), 1000);
+async function downloadReport() {
+  if (!latestResults || !latestAssessmentInputs) return;
+  downloadReportBtn.disabled = true;
+  try {
+    const blob = await window.buildBuildingReport(latestAssessmentInputs, latestResults);
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    const city = (latestAssessmentInputs.city || "project").toLowerCase().replace(/[^a-z0-9]+/g, "-");
+    link.href = url;
+    link.download = `building-health-report-${city}.pdf`;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  } catch (error) {
+    console.error("Could not generate building report", error);
+    alert("The report could not be downloaded. Please try again.");
+  } finally {
+    downloadReportBtn.disabled = false;
+  }
 }
 
 /*************************************************
@@ -1399,6 +1347,7 @@ assessBtn.addEventListener("click", () => {
 
   /* ========= RUN CALCULATION ========= */
   const results = calculateBuildingPerformance(inputs);
+  latestAssessmentInputs = Object.freeze({ ...collectInputs() });
   renderResults(results);
 });
 
