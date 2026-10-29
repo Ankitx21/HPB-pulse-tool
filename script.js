@@ -200,6 +200,8 @@ let reportIsDownloading = false;
 function openReportDialog() {
   if (!latestResults || !latestAssessmentInputs || reportDialog.open) return;
   reportDownloadError.hidden = true;
+  const defaultName = latestAssessmentInputs.state ? `Office \u2014 ${latestAssessmentInputs.state}` : "Office";
+  document.getElementById("reportProjectNameHint").textContent = `If left blank, your report will use ?${defaultName}?.`;
   reportDialog.showModal();
 }
 
