@@ -71,8 +71,8 @@
       if (line.trim()) lines.push(line.trim());
       lines.slice(0, 3).forEach((content, index) => {
         if (index === 2 && lines.length > 3) {
-          while (ctx.measureText(content + '?').width > width) content = content.slice(0, -1);
-          content += '?';
+          while (ctx.measureText(content + '\u2026').width > width) content = content.slice(0, -1);
+          content += '\u2026';
         }
         ctx.fillText(content, x, 224 + index * 14);
       });
@@ -80,7 +80,7 @@
     const defaultProjectName = inputs.state ? `Office \u2014 ${inputs.state}` : 'Office';
     profileValue((inputs.projectName || '').trim() || defaultProjectName, 45, 155);
     profileValue(inputs.city || '', 220, 158);
-    profileValue(finite(inputs.areaSqm) ? `${number(inputs.areaSqm)} m?` : 'Not available', 395, 164);
+    profileValue(finite(inputs.areaSqm) ? `${number(inputs.areaSqm)} m\u00b2` : 'Not available', 395, 164);
 
     const starText = results.starRating?.text || '';
     const match = starText.match(/\((\d) Star\)/);
