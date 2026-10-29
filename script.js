@@ -200,7 +200,7 @@ let reportIsDownloading = false;
 function openReportDialog() {
   if (!latestResults || !latestAssessmentInputs || reportDialog.open) return;
   reportDownloadError.hidden = true;
-  const defaultName = latestAssessmentInputs.state ? `Office \u2014 ${latestAssessmentInputs.state}` : "Office";
+  const defaultName = latestAssessmentInputs.state ? `Office in ${latestAssessmentInputs.state}` : "Office";
   document.getElementById("reportProjectNameHint").textContent = `If left blank, your report will use ?${defaultName}?.`;
   reportDialog.showModal();
 }
@@ -223,7 +223,7 @@ async function downloadReport() {
   reportDownloadError.hidden = true;
   reportDownloadForm.setAttribute("aria-busy", "true");
   try {
-    const defaultName = latestAssessmentInputs.state ? `Office \u2014 ${latestAssessmentInputs.state}` : "Office";
+    const defaultName = latestAssessmentInputs.state ? `Office in ${latestAssessmentInputs.state}` : "Office";
     const projectName = reportProjectName.value.trim() || defaultName;
     const blob = await window.buildBuildingReport({ ...latestAssessmentInputs, projectName }, latestResults);
     const url = URL.createObjectURL(blob);

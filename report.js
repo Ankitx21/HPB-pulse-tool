@@ -77,7 +77,7 @@
         ctx.fillText(content, x, 224 + index * 14);
       });
     }
-    const defaultProjectName = inputs.state ? `Office \u2014 ${inputs.state}` : 'Office';
+    const defaultProjectName = inputs.state ? `Office in ${inputs.state}` : 'Office';
     profileValue((inputs.projectName || '').trim() || defaultProjectName, 45, 155);
     profileValue(inputs.city || '', 220, 158);
     profileValue(finite(inputs.areaSqm) ? `${number(inputs.areaSqm)} m\u00b2` : 'Not available', 395, 164);
