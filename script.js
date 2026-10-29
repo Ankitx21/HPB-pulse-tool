@@ -35,6 +35,7 @@ function setResultsVisibility(showResults) {
 }
 
 function resetAssessmentForm() {
+  reportProjectName.value = "";
   const resetFields = [
     "area",
     "acArea",
@@ -188,11 +189,39 @@ function positionBubbleInFrame(bubble, frame, scale, pct, padding = 8) {
   };
 }
 
+const reportDialog = document.getElementById("reportDialog");
+const reportDownloadForm = document.getElementById("reportDownloadForm");
+const reportProjectName = document.getElementById("reportProjectName");
+const reportConfirmBtn = document.getElementById("reportConfirmBtn");
+const reportCancelBtn = document.getElementById("reportCancelBtn");
+const reportDownloadError = document.getElementById("reportDownloadError");
+let reportIsDownloading = false;
+
+function openReportDialog() {
+  if (!latestResults || !latestAssessmentInputs || reportDialog.open) return;
+  reportDownloadError.hidden = true;
+  reportDialog.showModal();
+}
+
+reportCancelBtn.addEventListener("click", () => reportDialog.close());
+reportDialog.addEventListener("cancel", event => {
+  if (reportIsDownloading) event.preventDefault();
+});
+reportDownloadForm.addEventListener("submit", event => {
+  event.preventDefault();
+  if (!reportIsDownloading) downloadReport();
+});
+
 async function downloadReport() {
   if (!latestResults || !latestAssessmentInputs) return;
-  downloadReportBtn.disabled = true;
+  reportIsDownloading = true;
+  reportConfirmBtn.disabled = true;
+  reportCancelBtn.disabled = true;
+  reportConfirmBtn.textContent = "Preparing PDF?";
+  reportDownloadError.hidden = true;
+  reportDownloadForm.setAttribute("aria-busy", "true");
   try {
-    const blob = await window.buildBuildingReport(latestAssessmentInputs, latestResults);
+    const blob = await window.buildBuildingReport({ ...latestAssessmentInputs, projectName: reportProjectName.value.trim() }, latestResults);
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     const city = (latestAssessmentInputs.city || "project").toLowerCase().replace(/[^a-z0-9]+/g, "-");
@@ -201,12 +230,18 @@ async function downloadReport() {
     document.body.appendChild(link);
     link.click();
     link.remove();
+    reportDialog.close();
     setTimeout(() => URL.revokeObjectURL(url), 1000);
   } catch (error) {
     console.error("Could not generate building report", error);
-    alert("The report could not be downloaded. Please try again.");
+    reportDownloadError.textContent = "The report could not be downloaded. Please try again.";
+    reportDownloadError.hidden = false;
   } finally {
-    downloadReportBtn.disabled = false;
+    reportIsDownloading = false;
+    reportConfirmBtn.disabled = false;
+    reportCancelBtn.disabled = false;
+    reportConfirmBtn.textContent = "Download PDF";
+    reportDownloadForm.removeAttribute("aria-busy");
   }
 }
 
@@ -1352,7 +1387,7 @@ assessBtn.addEventListener("click", () => {
 });
 
 resetBtn.addEventListener("click", resetAssessmentForm);
-downloadReportBtn.addEventListener("click", downloadReport);
+downloadReportBtn.addEventListener("click", openReportDialog);
 
 function buildDemandLine(d) {
   const parts = [];
